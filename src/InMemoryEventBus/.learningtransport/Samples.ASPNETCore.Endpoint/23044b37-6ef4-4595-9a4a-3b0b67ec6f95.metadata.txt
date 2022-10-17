@@ -1,0 +1,13 @@
+{
+  "NServiceBus.MessageId": "676ef9c1-2e82-4d35-a1ee-af31015254e3",
+  "NServiceBus.MessageIntent": "Send",
+  "NServiceBus.ConversationId": "2a3d6c5c-704d-4c23-b104-af31015254e3",
+  "NServiceBus.CorrelationId": "676ef9c1-2e82-4d35-a1ee-af31015254e3",
+  "NServiceBus.OriginatingMachine": "DESKTOP-HF8RPF0",
+  "NServiceBus.OriginatingEndpoint": "Samples.ASPNETCore.Sender",
+  "$.diagnostics.originating.hostid": "6fcf954bbafcd2540c71b196ec923534",
+  "NServiceBus.ContentType": "text\/xml",
+  "NServiceBus.EnclosedMessageTypes": "InMemoryEventBus.NServiceBus.Message, InMemoryEventBus, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "NServiceBus.Version": "7.8.0",
+  "NServiceBus.TimeSent": "2022-10-17 20:31:49:656578 Z"
+}

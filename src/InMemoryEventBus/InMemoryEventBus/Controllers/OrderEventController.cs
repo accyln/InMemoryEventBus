@@ -1,7 +1,9 @@
 ﻿using InMemoryEventBus.Entity;
+using InMemoryEventBus.NServiceBus;
 using InMemoryEventBus.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NServiceBus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,14 @@ namespace InMemoryEventBus.Controllers
     [ApiController]
     public class OrderEventController : ControllerBase
     {
+        MessageSender messageSender;
+        IMessageSession messageSession;
+        public OrderEventController(MessageSender messageSender, IMessageSession messageSession)
+        {
+            this.messageSender = messageSender;
+           this.messageSession = messageSession;
+        }
+
         [Route("RunEvent")]
         [HttpGet]
         public async Task<ActionResult> RunEvent()
@@ -24,6 +34,16 @@ namespace InMemoryEventBus.Controllers
             orderingService.PrepareOrder(order);
 
             return Ok(order);
+        }
+
+
+        [Route("SendMessage")]
+        [HttpGet]
+        public async Task<ActionResult> SendMessage()
+        {
+            await messageSender.SendMessage(messageSession);
+
+            return Ok();
         }
     }
 }

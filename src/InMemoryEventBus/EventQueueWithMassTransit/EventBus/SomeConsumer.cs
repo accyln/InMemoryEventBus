@@ -1,18 +1,22 @@
 ﻿using EventQueueWithMassTransit.EventBus.Event;
+using EventQueueWithMassTransit.Services;
 
 namespace EventQueueWithMassTransit.EventBus
 {
     public class SomeConsumer
     {
-        public void DoSomething(object source,DoSomethingEventArg doSomethingEventArg) {
+        private DefaultService defaultService;
+        public SomeConsumer(DefaultService defaultService)
+        {
+            this.defaultService = defaultService;
+        }
+        public event EventHandler<DoSomethingResponseEventArgs> DoitResponse;
+        public async void DoSomething(object source,DoSomethingEventArg doSomethingEventArg) {
 
-            Thread.Sleep(1000);
 
+            var result=await defaultService.DoSomethingLongJob(doSomethingEventArg);
 
-            Console.WriteLine($"AppService: your food '{doSomethingEventArg.Name}' is consumed.");
-
-            Thread.Sleep(1000);
-
+            
 
         }
     }

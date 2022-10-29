@@ -1,4 +1,5 @@
 using EventQueueWithMassTransit.Contracts;
+using EventQueueWithMassTransit.DataContext;
 using EventQueueWithMassTransit.EventBus;
 using EventQueueWithMassTransit.Services;
 using MassTransit;
@@ -19,10 +20,12 @@ builder.Services.AddMassTransit(x => {
     });
 
   });
-builder.Services.AddSingleton<SomePublisher>();
-builder.Services.AddSingleton<SomeConsumer>();
+builder.Services.AddDbContext<DataContext>();
+builder.Services.AddScoped<SomePublisher>();
+builder.Services.AddScoped<SomeConsumer>();
+builder.Services.AddScoped<DefaultService>();
 
-builder.Services.AddHostedService<Worker>();
+//builder.Services.AddHostedService<Worker>();
 
 var app = builder.Build();
 

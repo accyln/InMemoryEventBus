@@ -15,6 +15,13 @@ namespace EventQueueWithMassTransit.EventBus
 
 
             var result=await defaultService.DoSomethingLongJob(doSomethingEventArg);
+            if (result)
+            {
+                doSomethingEventArg.Result = "Ahmet";
+            } else
+            {
+                doSomethingEventArg.Result = "ccccc";
+            }
 
             
 

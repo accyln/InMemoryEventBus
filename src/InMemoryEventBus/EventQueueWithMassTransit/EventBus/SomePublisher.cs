@@ -10,16 +10,22 @@ namespace EventQueueWithMassTransit.EventBus
             _dataContext = dataContext;
         }
         public event EventHandler<DoSomethingEventArg> Doit;
-        public async Task<bool> DoSomethingPublisher()
+        public async Task<List<DoSomethingEventArg>> DoSomethingPublisher()
         {
-            var runs = _dataContext.TestRuns.ToList();
+            List<DoSomethingEventArg> doSomethingEventArgList = new List<DoSomethingEventArg>();
+            var runs = _dataContext.TestRuns.Take(10).ToList();
             foreach (var run in runs)
             {
-               Doit.Invoke(this, new DoSomethingEventArg() { Id=run.Id,
-                    Name = run.RunCode });
+                var args = new DoSomethingEventArg()
+                {
+                    Id = run.Id,
+                    Name = run.RunCode
+                };
+                Doit.Invoke(this, args);
+                doSomethingEventArgList.Add(args);
                 
             }
-            return true;
+            return doSomethingEventArgList;
         }
     }
 }

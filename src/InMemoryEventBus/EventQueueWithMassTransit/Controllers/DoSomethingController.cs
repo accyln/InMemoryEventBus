@@ -14,21 +14,23 @@ namespace EventQueueWithMassTransit.Controllers
         private SomeConsumer someConsumer;
         protected IBus _bus;
         private readonly IRequestClient<CreatePipeline> _client;
+        DataContext.DataContext _dataContext;
 
-        public DoSomethingController( IBus bus, SomePublisher somePublisher, SomeConsumer someConsumer)
+        public DoSomethingController( IBus bus, SomePublisher somePublisher, SomeConsumer someConsumer, DataContext.DataContext dataContext)
         {
             _bus = bus;
             this.somePublisher = somePublisher;
             this.someConsumer = someConsumer;
+            _dataContext = dataContext;
         }
 
         [HttpGet]
         public async Task<ActionResult> CreatePipeline()
         {
             somePublisher.Doit += someConsumer.DoSomething;
-            await somePublisher.DoSomethingPublisher();
+            var result=await somePublisher.DoSomethingPublisher();
 
-            return Ok();
+            return Ok(result);
         }
 
         [HttpPost]
@@ -50,12 +52,22 @@ namespace EventQueueWithMassTransit.Controllers
             return Ok();
         }
 
-        [HttpPost]
-        public async Task<ActionResult> MassTransitRequest()
-        {
-          
 
-            return Ok();
+        [HttpGet]
+        [Route("Get")]
+        public async Task Get()
+        {
+            var response = Response;
+            response.Headers.Add("Content-Type", "text/event-stream");
+            var runs = _dataContext.TestRuns.ToList();
+            foreach (var run in runs)
+            {
+                await response
+                    .WriteAsync($"data: Controller {run.RunCode} at {DateTime.Now}\r\r");
+
+                response.Body.Flush();
+                await Task.Delay(5 * 1000);
+            }
         }
     }
 }

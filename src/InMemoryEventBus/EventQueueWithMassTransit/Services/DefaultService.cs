@@ -10,7 +10,7 @@ namespace EventQueueWithMassTransit.Services
         {
             try
             {
-                Thread.Sleep(3000);
+                Thread.Sleep(1000);
                 Console.WriteLine($"AppService: your food '{doSomethingEventArg.Id}' ve '{doSomethingEventArg.Name.ToLower()}' is consumed.");
 
                 return true;
